@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard de Metas</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      color: #005c99;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      margin: 0.3rem 0;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.75rem;
+      background-color: #e0f0ff;
+      color: #005c99;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+    }
+
+    .progresso {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin-top: 0.3rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #4caf50;
+      width: 0;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .tooltip {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 0.5rem;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard de Metas por Diretoria</h1>
+  <div class="dashboard" id="dashboard"></div>
+
+  <script>
+    async function carregarDashboard() {
+      try {
+        const [resumoResp, observacoesResp] = await Promise.all([
+          fetch('resumo_dados.json'),
+          fetch('observacoes_regras.json')
+        ]);
+
+        const resumo = await resumoResp.json();
+        const observacoes = await observacoesResp.json();
+
+        const dashboard = document.getElementById('dashboard');
+
+        resumo.forEach(item => {
+          const progresso = Math.round((item.perc_real_abr || 0) * 100);
+
+          // Define a cor de progresso com base nas observações
+          let cor = "#4caf50"; // padrão: verde
+          if (progresso <= (observacoes.VERMELHO?.max * 100)) cor = "#f44336"; // vermelho
+          else if (progresso <= (observacoes.AMARELO?.max * 100)) cor = "#ff9800"; // amarelo
+
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          card.innerHTML = `
+            <h2>${item.diretoria}</h2>
+            <p><strong>Meta:</strong> ${item.metas}</p>
+            <p><strong>Tipo:</strong> ${item.tipo_meta} (${item.tipo_medida})</p>
+            <p><strong>Frequência:</strong> ${item.frequ_ncia}</p>
+            <p><strong>Descrição:</strong> ${item.descri_o_detalhada || 'Sem descrição'}</p>
+            <p class="badge">Abril: ${item.real_abr} / ${item.abril}</p>
+            <div class="progresso">
+              Progresso Abril: ${progresso}%
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: ${progresso}%; background-color: ${cor};"></div>
+              </div>
+              <span class="tooltip">Classificação: ${
+                cor === '#f44336' ? 'Vermelho' : cor === '#ff9800' ? 'Amarelo' : 'Verde'
+              }</span>
+            </div>
+          `;
+
+          dashboard.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error("Erro ao carregar os dados:", err);
+        document.getElementById('dashboard').innerHTML = "<p>Erro ao carregar os dados do dashboard.</p>";
+      }
+    }
+
+    carregarDashboard();
+  </script>
+</body>
+</html>

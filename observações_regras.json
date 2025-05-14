@@ -1,0 +1,38 @@
+{
+    "VERMELHO": {
+        "min": 0.0,
+        "max": 0.7598999999999999
+    },
+    "AMARELO": {
+        "min": 0.76,
+        "max": 0.8599
+    },
+    "VERDE": {
+        "min": 0.86,
+        "max": Infinity
+    },
+    "NAN": {
+        "min": NaN,
+        "max": NaN
+    },
+    "TER PAINEL DE PROSPECÇÃO": {
+        "min": NaN,
+        "max": NaN
+    },
+    "ESTAMOS NO MÊS X A META É Y E SE CONTINUARMOS ATINGINDO O RESULTADO Z A PROBABILIDADE DE BATERMOS A META É DE Q%": {
+        "min": NaN,
+        "max": NaN
+    },
+    "SEPARAR POR DIRETORIAS": {
+        "min": NaN,
+        "max": NaN
+    },
+    "TER CAMPO COM META DO ANO, META DO MÊS E % DE ATINGIMENTO DO MÊS": {
+        "min": NaN,
+        "max": NaN
+    },
+    "METAS QUE FOR 0 NAQUELE MÊS DEIXAR COMO 0, MAS NÃO OCULTAR": {
+        "min": NaN,
+        "max": NaN
+    }
+}
