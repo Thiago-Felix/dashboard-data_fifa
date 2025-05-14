@@ -30,6 +30,7 @@
       padding: 1.5rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       transition: transform 0.2s;
+      min-height: 220px;
     }
 
     .card:hover {
@@ -96,7 +97,7 @@
     async function carregarDashboard() {
       try {
         const [resumoResp, observacoesResp] = await Promise.all([
-          fetch('https://raw.githubusercontent.com/Thiago-Felix/datafifa.github.io/main/data/resumo_dados.json')
+          fetch('https://raw.githubusercontent.com/Thiago-Felix/datafifa.github.io/main/data/resumo_dados.json'),
           fetch('https://raw.githubusercontent.com/Thiago-Felix/datafifa.github.io/main/data/observacoes_regras.json')
         ]);
 
@@ -108,9 +109,10 @@
           const perc = parseFloat(item.perc_real_abr);
           const progresso = isNaN(perc) ? 0 : Math.round(perc * 100);
 
-          let cor = "#4caf50"; // verde
-          if (progresso <= (observacoes.VERMELHO?.max * 100)) cor = "#f44336"; // vermelho
-          else if (progresso <= (observacoes.AMARELO?.max * 100)) cor = "#ff9800"; // amarelo
+          // Define cor de fundo baseado no progresso
+          let cor = "#4caf50";
+          if (progresso <= (observacoes.VERMELHO?.max * 100)) cor = "#f44336";
+          else if (progresso <= (observacoes.AMARELO?.max * 100)) cor = "#ff9800";
 
           const card = document.createElement('div');
           card.className = 'card';
@@ -121,7 +123,7 @@
             <p><strong>Tipo:</strong> ${item.tipo_meta} (${item.tipo_medida})</p>
             <p><strong>Frequência:</strong> ${item.frequ_ncia}</p>
             <p><strong>Descrição:</strong> ${item.descri_o_detalhada || 'Sem descrição'}</p>
-            <p class="badge">Abril: ${item.real_abr} / ${item.abril}</p>
+            <p class="badge">Abril: ${item.real_abr ?? '-'} / ${item.abril ?? '-'}</p>
             <div class="progresso">
               Progresso Abril: ${progresso}%
               <div class="progress-bar">
