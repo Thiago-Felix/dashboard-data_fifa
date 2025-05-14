@@ -97,8 +97,8 @@
     async function carregarDashboard() {
       try {
         const [resumoResp, observacoesResp] = await Promise.all([
-          fetch('https://raw.githubusercontent.com/Thiago-Felix/datafifa.github.io/main/data/resumo_dados.json'),
-          fetch('https://raw.githubusercontent.com/Thiago-Felix/datafifa.github.io/main/data/observacoes_regras.json')
+          fetch('resumo_dados.json'),
+          fetch('observacoes_regras.json')
         ]);
 
         const resumo = await resumoResp.json();
