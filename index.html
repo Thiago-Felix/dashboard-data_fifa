@@ -14,8 +14,93 @@
 
     h1 {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
       color: #333;
+    }
+
+    .filters-container {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+    }
+
+    .filter-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #555;
+    }
+
+    .filter-group select {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+      font-size: 0.9rem;
+    }
+
+    .area-container {
+      margin-bottom: 2rem;
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .area-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .area-title {
+      font-size: 1.4rem;
+      color: #005c99;
+      margin: 0;
+    }
+
+    .area-stats {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f0f7ff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #005c99;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #666;
     }
 
     .dashboard {
@@ -31,6 +116,8 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       transition: transform 0.2s;
       min-height: 220px;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
@@ -49,6 +136,13 @@
       font-size: 0.95rem;
     }
 
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
     .badge {
       display: inline-block;
       padding: 0.3rem 0.6rem;
@@ -56,11 +150,26 @@
       background-color: #e0f0ff;
       color: #005c99;
       border-radius: 6px;
-      margin-top: 0.5rem;
+    }
+
+    .badge.tipo-meta {
+      background-color: #e0f0ff;
+      color: #005c99;
+    }
+
+    .badge.frequencia {
+      background-color: #e0ffe0;
+      color: #006600;
+    }
+
+    .badge.tipo-medida {
+      background-color: #ffe0e0;
+      color: #990000;
     }
 
     .progresso {
-      margin-top: 1rem;
+      margin-top: auto;
+      padding-top: 1rem;
       font-size: 0.9rem;
       color: #333;
     }
@@ -87,13 +196,112 @@
       margin-top: 0.5rem;
       display: block;
     }
+
+    .metrics-comparison {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .metric-item {
+      text-align: center;
+    }
+
+    .metric-value {
+      font-weight: 600;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-style: italic;
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 768px) {
+      .filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-group {
+        width: 100%;
+      }
+      
+      .area-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .area-stats {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>Dashboard de Metas - Data FIFA</h1>
-  <div class="dashboard" id="dashboard"></div>
+  
+  <!-- Filtros no topo -->
+  <div class="filters-container">
+    <div class="filters">
+      <div class="filter-group">
+        <label for="filter-diretoria">Diretoria</label>
+        <select id="filter-diretoria">
+          <option value="todas">Todas as Diretorias</option>
+          <!-- Opções serão preenchidas dinamicamente -->
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-tipo-meta">Tipo de Meta</label>
+        <select id="filter-tipo-meta">
+          <option value="todos">Todos os Tipos</option>
+          <!-- Opções serão preenchidas dinamicamente -->
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-frequencia">Frequência</label>
+        <select id="filter-frequencia">
+          <option value="todas">Todas as Frequências</option>
+          <!-- Opções serão preenchidas dinamicamente -->
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-tipo-medida">Tipo de Medida</label>
+        <select id="filter-tipo-medida">
+          <option value="todos">Todos os Tipos</option>
+          <!-- Opções serão preenchidas dinamicamente -->
+        </select>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Container para áreas agrupadas -->
+  <div id="areas-container">
+    <!-- Áreas serão preenchidas dinamicamente -->
+  </div>
 
   <script>
+    // Variáveis globais para armazenar dados e filtros
+    let resumoDados = [];
+    let observacoes = {};
+    let filtrosDiretorias = new Set();
+    let filtrosTiposMeta = new Set();
+    let filtrosFrequencias = new Set();
+    let filtrosTiposMedida = new Set();
+    
+    // Filtros ativos
+    let filtrosAtivos = {
+      diretoria: 'todas',
+      tipoMeta: 'todos',
+      frequencia: 'todas',
+      tipoMedida: 'todos'
+    };
+
     async function carregarDashboard() {
       try {
         const [resumoResp, observacoesResp] = await Promise.all([
@@ -101,47 +309,243 @@
           fetch('https://thiago-felix.github.io/dashboard-data_fifa/observacoes_regras.json')
         ]);
 
-        const resumo = await resumoResp.json();
-        const observacoes = await observacoesResp.json();
-        const dashboard = document.getElementById('dashboard');
-
-        resumo.forEach(item => {
-          const perc = parseFloat(item.perc_real_abr);
-          const progresso = isNaN(perc) ? 0 : Math.round(perc * 100);
-
-          // Define cor de fundo baseado no progresso
-          let cor = "#4caf50";
-          if (progresso <= (observacoes.VERMELHO?.max * 100)) cor = "#f44336";
-          else if (progresso <= (observacoes.AMARELO?.max * 100)) cor = "#ff9800";
-
-          const card = document.createElement('div');
-          card.className = 'card';
-
-          card.innerHTML = `
-            <h2>${item.diretoria}</h2>
-            <p><strong>Meta:</strong> ${item.metas}</p>
-            <p><strong>Tipo:</strong> ${item.tipo_meta} (${item.tipo_medida})</p>
-            <p><strong>Frequência:</strong> ${item.frequ_ncia}</p>
-            <p><strong>Descrição:</strong> ${item.descri_o_detalhada || 'Sem descrição'}</p>
-            <p class="badge">Abril: ${item.real_abr ?? '-'} / ${item.abril ?? '-'}</p>
-            <div class="progresso">
-              Progresso Abril: ${progresso}%
-              <div class="progress-bar">
-                <div class="progress-fill" style="width: ${progresso}%; background-color: ${cor};"></div>
-              </div>
-              <span class="tooltip">Classificação: ${
-                cor === '#f44336' ? 'Vermelho' : cor === '#ff9800' ? 'Amarelo' : 'Verde'
-              }</span>
-            </div>
-          `;
-
-          dashboard.appendChild(card);
+        resumoDados = await resumoResp.json();
+        observacoes = await observacoesResp.json();
+        
+        // Extrair valores únicos para filtros
+        resumoDados.forEach(item => {
+          filtrosDiretorias.add(item.diretoria);
+          filtrosTiposMeta.add(item.tipo_meta);
+          filtrosFrequencias.add(item.frequ_ncia);
+          filtrosTiposMedida.add(item.tipo_medida);
         });
+        
+        // Preencher opções de filtros
+        preencherFiltros();
+        
+        // Renderizar dashboard inicial
+        renderizarDashboard();
+        
+        // Adicionar event listeners para filtros
+        document.getElementById('filter-diretoria').addEventListener('change', atualizarFiltros);
+        document.getElementById('filter-tipo-meta').addEventListener('change', atualizarFiltros);
+        document.getElementById('filter-frequencia').addEventListener('change', atualizarFiltros);
+        document.getElementById('filter-tipo-medida').addEventListener('change', atualizarFiltros);
 
       } catch (err) {
         console.error("Erro ao carregar os dados:", err);
-        document.getElementById('dashboard').innerHTML = "<p>Erro ao carregar os dados do dashboard.</p>";
+        document.getElementById('areas-container').innerHTML = "<p>Erro ao carregar os dados do dashboard.</p>";
       }
+    }
+    
+    function preencherFiltros() {
+      // Preencher filtro de diretorias
+      const filtroDiretoria = document.getElementById('filter-diretoria');
+      filtrosDiretorias.forEach(diretoria => {
+        const option = document.createElement('option');
+        option.value = diretoria;
+        option.textContent = diretoria;
+        filtroDiretoria.appendChild(option);
+      });
+      
+      // Preencher filtro de tipos de meta
+      const filtroTipoMeta = document.getElementById('filter-tipo-meta');
+      filtrosTiposMeta.forEach(tipo => {
+        const option = document.createElement('option');
+        option.value = tipo;
+        option.textContent = tipo;
+        filtroTipoMeta.appendChild(option);
+      });
+      
+      // Preencher filtro de frequências
+      const filtroFrequencia = document.getElementById('filter-frequencia');
+      filtrosFrequencias.forEach(freq => {
+        const option = document.createElement('option');
+        option.value = freq;
+        option.textContent = freq;
+        filtroFrequencia.appendChild(option);
+      });
+      
+      // Preencher filtro de tipos de medida
+      const filtroTipoMedida = document.getElementById('filter-tipo-medida');
+      filtrosTiposMedida.forEach(tipo => {
+        const option = document.createElement('option');
+        option.value = tipo;
+        option.textContent = tipo;
+        filtroTipoMedida.appendChild(option);
+      });
+    }
+    
+    function atualizarFiltros() {
+      filtrosAtivos.diretoria = document.getElementById('filter-diretoria').value;
+      filtrosAtivos.tipoMeta = document.getElementById('filter-tipo-meta').value;
+      filtrosAtivos.frequencia = document.getElementById('filter-frequencia').value;
+      filtrosAtivos.tipoMedida = document.getElementById('filter-tipo-medida').value;
+      
+      renderizarDashboard();
+    }
+    
+    function filtrarDados() {
+      return resumoDados.filter(item => {
+        return (filtrosAtivos.diretoria === 'todas' || item.diretoria === filtrosAtivos.diretoria) &&
+               (filtrosAtivos.tipoMeta === 'todos' || item.tipo_meta === filtrosAtivos.tipoMeta) &&
+               (filtrosAtivos.frequencia === 'todas' || item.frequ_ncia === filtrosAtivos.frequencia) &&
+               (filtrosAtivos.tipoMedida === 'todos' || item.tipo_medida === filtrosAtivos.tipoMedida);
+      });
+    }
+    
+    function renderizarDashboard() {
+      const dadosFiltrados = filtrarDados();
+      const areasContainer = document.getElementById('areas-container');
+      areasContainer.innerHTML = '';
+      
+      // Agrupar por diretoria
+      const dadosPorDiretoria = agruparPorDiretoria(dadosFiltrados);
+      
+      // Se não houver resultados
+      if (Object.keys(dadosPorDiretoria).length === 0) {
+        areasContainer.innerHTML = '<div class="area-container"><p class="no-results">Nenhum resultado encontrado para os filtros selecionados.</p></div>';
+        return;
+      }
+      
+      // Renderizar cada área (diretoria)
+      Object.entries(dadosPorDiretoria).forEach(([diretoria, items]) => {
+        const areaContainer = document.createElement('div');
+        areaContainer.className = 'area-container';
+        
+        // Calcular estatísticas da área
+        const estatisticas = calcularEstatisticas(items);
+        
+        // Criar cabeçalho da área
+        areaContainer.innerHTML = `
+          <div class="area-header">
+            <h2 class="area-title">${diretoria}</h2>
+            <div class="area-stats">
+              <div class="stat-item">
+                <span class="stat-value">${items.length}</span>
+                <span class="stat-label">Metas</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">${estatisticas.progresso}%</span>
+                <span class="stat-label">Progresso Médio</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">${estatisticas.status}</span>
+                <span class="stat-label">Status</span>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Criar container para os cards
+        const dashboard = document.createElement('div');
+        dashboard.className = 'dashboard';
+        
+        // Adicionar cards
+        items.forEach(item => {
+          const card = criarCard(item);
+          dashboard.appendChild(card);
+        });
+        
+        areaContainer.appendChild(dashboard);
+        areasContainer.appendChild(areaContainer);
+      });
+    }
+    
+    function agruparPorDiretoria(dados) {
+      const grupos = {};
+      
+      dados.forEach(item => {
+        if (!grupos[item.diretoria]) {
+          grupos[item.diretoria] = [];
+        }
+        grupos[item.diretoria].push(item);
+      });
+      
+      return grupos;
+    }
+    
+    function calcularEstatisticas(items) {
+      let somaProgresso = 0;
+      let contadorValidos = 0;
+      
+      items.forEach(item => {
+        const perc = parseFloat(item.perc_real_abr);
+        if (!isNaN(perc)) {
+          somaProgresso += perc * 100;
+          contadorValidos++;
+        }
+      });
+      
+      const progressoMedio = contadorValidos > 0 ? Math.round(somaProgresso / contadorValidos) : 0;
+      
+      // Determinar status com base no progresso médio
+      let status = 'Verde';
+      if (progressoMedio <= (observacoes.VERMELHO?.max * 100)) status = 'Vermelho';
+      else if (progressoMedio <= (observacoes.AMARELO?.max * 100)) status = 'Amarelo';
+      
+      return {
+        progresso: progressoMedio,
+        status: status
+      };
+    }
+    
+    function criarCard(item) {
+      const perc = parseFloat(item.perc_real_abr);
+      const progresso = isNaN(perc) ? 0 : Math.round(perc * 100);
+
+      // Define cor de fundo baseado no progresso
+      let cor = "#4caf50";
+      if (progresso <= (observacoes.VERMELHO?.max * 100)) cor = "#f44336";
+      else if (progresso <= (observacoes.AMARELO?.max * 100)) cor = "#ff9800";
+      
+      // Calcular diferença entre real e meta
+      const realAbr = parseFloat(item.real_abr) || 0;
+      const metaAbr = parseFloat(item.abril) || 0;
+      const diferenca = realAbr - metaAbr;
+      const diferencaFormatada = diferenca >= 0 ? `+${diferenca.toFixed(2)}` : diferenca.toFixed(2);
+      const diferencaClasse = diferenca >= 0 ? 'positiva' : 'negativa';
+
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      card.innerHTML = `
+        <h2>${item.metas}</h2>
+        <p><strong>Descrição:</strong> ${item.descri_o_detalhada || 'Sem descrição'}</p>
+        
+        <div class="card-meta">
+          <span class="badge tipo-meta">${item.tipo_meta}</span>
+          <span class="badge frequencia">${item.frequ_ncia}</span>
+          <span class="badge tipo-medida">${item.tipo_medida}</span>
+        </div>
+        
+        <div class="metrics-comparison">
+          <div class="metric-item">
+            <div>Meta Abril</div>
+            <div class="metric-value">${item.abril ?? '-'}</div>
+          </div>
+          <div class="metric-item">
+            <div>Real Abril</div>
+            <div class="metric-value">${item.real_abr ?? '-'}</div>
+          </div>
+          <div class="metric-item">
+            <div>Diferença</div>
+            <div class="metric-value ${diferencaClasse}">${diferencaFormatada}</div>
+          </div>
+        </div>
+        
+        <div class="progresso">
+          Progresso Abril: ${progresso}%
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${progresso}%; background-color: ${cor};"></div>
+          </div>
+          <span class="tooltip">Classificação: ${
+            cor === '#f44336' ? 'Vermelho' : cor === '#ff9800' ? 'Amarelo' : 'Verde'
+          }</span>
+        </div>
+      `;
+
+      return card;
     }
 
     carregarDashboard();
